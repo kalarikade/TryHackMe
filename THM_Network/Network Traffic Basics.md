@@ -189,7 +189,7 @@ NS traffic is often monitored closely as it flows from the LAN to the WAN and vi
 **East-West Traffic**  
 EW traffic stays within the corporate LAN, so it is often monitored less. However, it is important to keep track of these flows. When the network is compromised, an attacker will often exploit different services internally to move laterally within the network. As we see below, there are many services within this category. Click on each category to see which services it contains.
 
-<span style="color:red">Directory, Authentication & Identity Services</span>
+**Directory, Authentication & Identity Services**
 
 - Kerberos / LDAP: Authentication/queries to Active Directory
 - RADIUS / TACACS+: Network access control
