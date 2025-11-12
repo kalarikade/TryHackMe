@@ -154,3 +154,70 @@ No.   Time       Source           Destination      Protocol Length Info
 6     1.100120   192.168.1.200    172.217.22.14    TCP      74     54433 → 80 [SYN] Seq=0 Win=64240 Len=0  <-- Relayed via attacker
 ```
 
+# Network Traffic Sources & Flows
+In the previous task, we discussed what we can observe theoretically based on the TCP/IP stack. Practically, it is more helpful to focus on specific sources and flows. A corporate network typically has some predetermined network flows and sources. We can group the sources into two categories:
+
+- Intermediary
+- Endpoint
+
+The flows we can also group into two categories:
+
+- North-South: Traffic that exits or enters the LAN and passes the firewall
+- East-West: Traffic that stays within the LAN (including LAN that extends to the cloud)
+
+Let's explore each of them below.
+
+## Sources
+
+As mentioned, two network traffic sources exist: endpoint and intermediary devices. These devices can be found within the LAN and WAN.
+
+**Intermediary Sources**  
+These are devices through which traffic mostly passes. While they generate some traffic, it is significantly lower than what endpoint devices generate. Under this category, we can find firewalls, switches, web proxies, IDS, IPS, routers, access points, wireless LAN controllers, and many more. Maybe less relevant for us, but all the infrastructure of Internet Service Providers is also considered part of this category.
+
+The traffic that originates from these devices comes from services like routing protocols (EIGRP, OSPF, BGP), management protocols (SNMP, PING), logging protocols (SYSLOG), and other supporting protocols (ARP, STP, DHCP).
+
+**Endpoint Sources**  
+These are devices where traffic originates and ends. Endpoint devices take the bulk of the network bandwidth. Devices that fall under this category are servers, hosts, IoT devices, printers, virtual machines, cloud resources, mobile phones, tablets, and many more.
+
+## Flows
+
+A network traffic flow is typically determined by the services available in the network, such as Active Directory, SMB, HTTPS, and so on. In a typical corporate network, we can group these flows into North-South and East-West traffic.
+
+**North-South Traffic**  
+NS traffic is often monitored closely as it flows from the LAN to the WAN and vice versa. The most well-known services in this category are client-server protocols like HTTPS, DNS, SSH, VPN, SMTP, RDP, and many more. Each of these protocols has two streams: ingress (inbound) and egress (outbound). All of this traffic passes the firewall in one way or another. Configuring firewall rules and logging properly are key to visibility.
+
+**East-West Traffic**  
+EW traffic stays within the corporate LAN, so it is often monitored less. However, it is important to keep track of these flows. When the network is compromised, an attacker will often exploit different services internally to move laterally within the network. As we see below, there are many services within this category. Click on each category to see which services it contains.
+
+==*Directory, Authentication & Identity Services
+
+*==File shares & print services
+
+==*Router, switching, and infrastructure services
+
+==*Application Communication
+
+==*Backup & Replication
+
+*==Monitoring & Management
+
+## Flow Examples
+
+Let's have a visual look at some of the network flows mentioned above.
+
+<u><b>HTTPS</b> </u>
+There are different variations of HTTPS network traffic flows. Let's examine a flow where the web proxy does TLS inspection:  
+A host requests a website; this request is sent to the NGFW, which includes a web proxy. The web proxy will act as the web server and simultaneously establish a new TCP session with the actual web server and forward the clients' requests. When the web proxy receives the answer from the web server, it inspects its contents and then forwards it to the host if deemed safe. To summarize, we have two sessions, one between the client and the proxy and the other between the proxy and the web server. From the client's point of view, it has established a session with the web server.
+
+![HTTPS Network Flow](https://tryhackme-images.s3.amazonaws.com/user-uploads/66c44fd9733427ea1181ad58/room-content/66c44fd9733427ea1181ad58-1760459431334.svg)
+
+**External DNS**  
+DNS traffic within a corporate network starts when a host sends a DNS query. The host sends the query to the internal DNS server on port 53, which will then act on behalf of the host. First, it will check if it has an answer to the query in its cache; if not, it will send the query via the router, through the firewall, to the configured DNS servers. The answer will then follow the same path to the internal DNS server, which will then forward it to the host. The network diagram below shows a simplified flow.
+
+![DNS Network Flow](https://tryhackme-images.s3.amazonaws.com/user-uploads/66c44fd9733427ea1181ad58/room-content/66c44fd9733427ea1181ad58-1760460288845.svg)
+
+**SMB with Kerberos**  
+When a host opens a share to, for example, \\FILESERVER\MARKETING, an SMB session is set up. First, authentication is done via Kerberos. When a user logged in on the host, it **authenticated** with the Key Distribution Center on the Domain Controller and received a Ticket Granting Ticket to request **"service authentication tickets"**. Now, the host requests a service ticket using the Ticket Granting Ticket it received earlier. The host then uses this ticket to establish the SMB connection. Once the SMB session is set up, the host can access the share. Below we see a simplified network diagram of the flow.
+
+![HTTPS Flow](https://tryhackme-images.s3.amazonaws.com/user-uploads/66c44fd9733427ea1181ad58/room-content/66c44fd9733427ea1181ad58-1760459778270.svg)
+
