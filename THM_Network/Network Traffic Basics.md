@@ -67,3 +67,4 @@ Below are two more scenarios that illustrate the importance of network traffic a
 - We received an alert that an end-user system is sending many DNS requests in comparison to baseline of the network. After inspecting the DNS requests, we discovered that data was being exfiltrated using a technique called ==**DNS tunneling**==
 
 Now that we know **why** we need network traffic analysis, let's continue with the next task to discover **what** exactly we can monitor.
+

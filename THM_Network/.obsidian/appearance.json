@@ -1,4 +1,7 @@
 {
   "cssTheme": "Pisum",
-  "theme": "obsidian"
+  "theme": "obsidian",
+  "enabledCssSnippets": [
+    "pisum_obsidian"
+  ]
 }
