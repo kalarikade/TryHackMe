@@ -128,7 +128,8 @@ No.     Time        Source          Destination     Protocol Length  Info
 - Lines 4 and 5 show legitimate data transfer
 - Line 6 shows a packet from another source trying to inject itself into the session. Note the massive jump in the sequence number
 
-**Internet**  
+`<span style="color: red;">`==**Internet**  ==</span>
+
 When the transport layer sends down a segment, the internet layer also adds its header. If the segment is larger than the Maximum Transmission Unit (MTU), it will be divided into fragments, and a header will be added to each of them. The fields that are most often logged are the source and destination IP and TTL. This is sufficient for most use cases. But, if we want to, for example, detect fragmentation attacks, we will need to inspect the fragment offset and total length fields as well. There are different variations of a fragmentation attack. For example, an attacker can create tiny fragments to evade the IDS or mess up the reassembly of fragments by using overlapping byte ranges. The example below shows overlapping byte ranges. The offset in line 3 (highlighted in yellow) overlaps with the one in line 2. This means that the complete packet can be reassembled one way or another. Attackers can use this technique to bypass an IDS, for example.
 
 ```json
