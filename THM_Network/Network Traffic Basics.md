@@ -64,6 +64,6 @@ From a SOC perspective, network traffic analysis helps:
 Below are two more scenarios that illustrate the importance of network traffic analysis:
 
 - Based on the logs for an end-user system, the system began to deviate from its normal behavior around 4 PM UTC. Analyzing the network traffic going to and from this system, we found a suspicious HTTP request and were able to extract a suspicious ZIP-file
-- We received an alert that an end-user system is sending many DNS requests in comparison to baseline of the network. After inspecting the DNS requests, we discovered that data was being exfiltrated using a technique called DNS tunneling
+- We received an alert that an end-user system is sending many DNS requests in comparison to baseline of the network. After inspecting the DNS requests, we discovered that data was being exfiltrated using a technique called ==**DNS tunneling**==
 
 Now that we know **why** we need network traffic analysis, let's continue with the next task to discover **what** exactly we can monitor.
