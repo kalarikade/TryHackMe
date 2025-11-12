@@ -189,17 +189,17 @@ NS traffic is often monitored closely as it flows from the LAN to the WAN and vi
 **East-West Traffic**  
 EW traffic stays within the corporate LAN, so it is often monitored less. However, it is important to keep track of these flows. When the network is compromised, an attacker will often exploit different services internally to move laterally within the network. As we see below, there are many services within this category. Click on each category to see which services it contains.
 
-==*Directory, Authentication & Identity Services
+Directory, Authentication & Identity Services
 
-*==File shares & print services
+File shares & print services
 
-==*Router, switching, and infrastructure services
+Router, switching, and infrastructure services
 
-==*Application Communication
+Application Communication
 
-==*Backup & Replication
+Backup & Replication
 
-*==Monitoring & Management
+Monitoring & Management
 
 ## Flow Examples
 
