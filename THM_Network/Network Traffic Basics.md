@@ -206,8 +206,10 @@ Monitoring & Management
 Let's have a visual look at some of the network flows mentioned above.
 
 <u><b>HTTPS</b> </u>
+<p>
 There are different variations of HTTPS network traffic flows. Let's examine a flow where the web proxy does TLS inspection:  
 A host requests a website; this request is sent to the NGFW, which includes a web proxy. The web proxy will act as the web server and simultaneously establish a new TCP session with the actual web server and forward the clients' requests. When the web proxy receives the answer from the web server, it inspects its contents and then forwards it to the host if deemed safe. To summarize, we have two sessions, one between the client and the proxy and the other between the proxy and the web server. From the client's point of view, it has established a session with the web server.
+</p>
 
 ![HTTPS Network Flow](https://tryhackme-images.s3.amazonaws.com/user-uploads/66c44fd9733427ea1181ad58/room-content/66c44fd9733427ea1181ad58-1760459431334.svg)
 
