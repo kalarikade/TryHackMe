@@ -195,29 +195,29 @@ EW traffic stays within the corporate LAN, so it is often monitored less. Howeve
 - RADIUS / TACACS+: Network access control
 - Certificate Authority issuing internal certifications
 
-File shares & print services
+**File shares & print services
 
 - SMB/CIFS: Accessing network drives
 - IPP/LPD: Printing over the network
 
-Router, switching, and infrastructure services
+**Router, switching, and infrastructure services
 
 - DHCP traffic between hosts and the DHCP server
 - ARP broadcast messages
 - Internal DNS
 - Routing protocol messages
 
-Application Communication
+**Application Communication
 
 - Database Connections: SQL over TCP
 - Microservices APIs: REST or gRPC calls between services
 
-Backup & Replication
+**Backup & Replication
 
 - File Replication: Between data centers or to backup servers
 - Database Replication: MySQL binlog replication, PostgreSQL streaming, and more
 
-Monitoring & Management
+**Monitoring & Management
 
 - SNMP: Device health metrics
 - Syslog: Centralized logging
