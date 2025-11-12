@@ -1,0 +1,7 @@
+{
+  "remoteURL": "git@github.com:kalarikade/TryHackMe.git",
+  "gitLocation": "",
+  "syncinterval": 5,
+  "isSyncOnLoad": false,
+  "checkStatusOnLoad": true
+}
