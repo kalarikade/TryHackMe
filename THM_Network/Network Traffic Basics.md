@@ -246,3 +246,82 @@ When a host opens a share to, for example, \\FILESERVER\MARKETING, an SMB sessio
 
 ![HTTPS Flow](https://tryhackme-images.s3.amazonaws.com/user-uploads/66c44fd9733427ea1181ad58/room-content/66c44fd9733427ea1181ad58-1760459778270.svg)
 
+# How Can We Observe Network Traffic?
+Now that we have covered what we can and should observe in a network, let's examine how. As mentioned in the introduction, network traffic analysis focuses on combining multiple sources of information, analyzing them, finding patterns, and using the results to inform actions.
+
+We can obtain these sources of information in multiple ways:
+
+- Logs
+- Full Packet Capture
+- Network Statistics
+
+## Logs
+
+Logs are our first entry into acquiring information about what is going on in the network. Each system and protocol in the network includes a way of logging information. It is essential to know that there is no universal standard for implementing logging on each system and protocol. Each vendor chooses how to implement logging for themselves. For example, Microsoft implements Windows Event Logs. Also, the data that is logged is up to the vendor. Most vendors will not log a full packet as it enters or exits the system. They will log some fields that they deem useful, such as a source IP address and a destination IP address. On the terminal below, we see some example logs of authentication on a Linux host using the Syslog format and an Apache web server access log that uses the CLF standard.
+
+```bash
+# Auth log
+Oct  8 11:20:15 web01 sshd[2145]: Accepted password for gensane from 192.168.1.50 port 52234 ssh2
+
+# Apache web server access log
+192.168.1.50 - - [08/Oct/2025:11:20:18 +0200] "GET /index.html HTTP/1.1" 200 2326 "-" "Mozilla/5.0"
+```
+
+Even though there is no standard logging way, there are some protocols that offer a standardized way of sending log messages from devices to collectors, for example, Syslog and SNMP.
+
+When the logs don't provide enough information, we must dig deeper. To do so, we need to correlate logs, inspect full packet captures, and check network statistics.
+
+## Full Packet Capture
+
+In task three, we discussed what a full packet looks like. Now, we want to know how to capture and inspect those packets. To do this, we have two options:
+
+- Install a physical network tap
+- Configure port mirroring
+
+**Network Tap**  
+A network tap is a physical device you place inline in your network. These devices create a copy of all the network traffic that passes without affecting performance. That copied data is then forwarded to a packet capture box, IDS, or other system using the dedicated monitoring port. It is interesting to know that a TAP operates only on the link layer of the TCP-IP model; it does not need a MAC or IP address, because it copies the electrical/light signals and sends them to its monitoring port. This way, there is no added delay to the network. The image below shows an example of a network TAP.
+
+![Network TAP](https://tryhackme-images.s3.amazonaws.com/user-uploads/66c44fd9733427ea1181ad58/room-content/66c44fd9733427ea1181ad58-1760027292073.png)
+
+**Port Mirroring**  
+Port mirroring is a software approach to copying packets from one port on an intermediary device to another that is attached to, for example, an IDS, packet capture box, or other systems. Each vendor has its own name. Cisco, for example, calls it SPAN. On the terminal below, we can see how to configure SPAN on a Cisco device. In this example, the packets going through `fastEthernet0/1` are duplicated and sent to `fastEthernet0/2`.
+
+```json
+Switch(config)# monitor session 1 source interface fastEthernet0/1
+Switch(config)# monitor session 1 destination interface fastEthernet0/2
+```
+
+The image below shows what this would look like. The WIN-001 sends packets through the switch to communicate with the server. When the packet arrives at the switch, it gets duplicated and is also sent to the monitoring device.
+
+![SPAN diagram](https://tryhackme-images.s3.amazonaws.com/user-uploads/66c44fd9733427ea1181ad58/room-content/66c44fd9733427ea1181ad58-1760354092835.png)
+
+Note that the intermediary devices do not necessarily need to be physical, port mirroring can also be configured on a virtual devices such as a VMware vSwitch. Cloud environments also have specific services that offer mirroring. AWS, for example, offers VPC Traffic Mirroring.
+
+**Best Practices**  
+When doing full packet capture, we need to take some things into account:
+
+- Placement: Depending on which traffic we want to capture, we need to place the TAP or configure the mirror in the right place
+- Duration: Full packet capture will require a proportionate amount of storage. If you capture traffic on a 1 Gbps line for a whole day, we would need an average of 10.8 TB of storage space. Imagine the amount of storage we need on 10Gb or 40Gb lines
+- Mirror vs TAP: Physical taps offer close to zero performance reduction. Mirroring can impact performance when a huge amount of traffic passes through the mirrored port
+
+`Exercise: Open the static site and complete the two exercises by placing the tap in the correct position and uncovering the flag in the traffic. Fill in the flags at the end of this task. You can open the static site by clicking on the "View Site" button and the top of this task. The static site will open in split-screen. To open the static site in full screen, click the "Full Screen" button on the static site.`
+
+**Tools**  
+Now that we know how to do full packet captures lets have a look at the tools available to analyze these packets:
+
+- Wireshark
+- TCPdump
+- IPS/IDS like Snort, Suricata and zeek
+
+These are some of the many tools that are available to analyze full packet captures. In the following rooms in this module we will focus on using Wireshark.
+
+## Network Statistics
+
+Another great way to find anomalies in your network is to gather metadata about the data flowing through the network, such as counting the number of DNS requests that a host sends out. A few protocols facilitate this. We will briefly discuss two of them: NetFlow and IPFIX.
+
+**NetFlow** is a protocol developed by Cisco that collects metadata about traffic flowing in a network. It is a great way to detect things like C2 traffic, data exfiltration, and lateral movement. The image below shows a sample of NetFlow output. As we can see, the sample does not contain individual packets but metadata about the flow of packets going from the source IP 12.1.1.1 to the destination IP 13.1.1.2.  
+![NetFlow data example](https://tryhackme-images.s3.amazonaws.com/user-uploads/66c44fd9733427ea1181ad58/room-content/66c44fd9733427ea1181ad58-1760027513334.png)
+
+**The Internet Protocol Flow Information Export protocol (IPFIX)** can be considered as the successor to NetFlow. NetFlow was initially a proprietary protocol from Cisco. This means that the protocol was designed for Cisco systems only. Only from NetFlow v9 on did Cisco include templating, so other vendors could adapt it to their devices. In collaboration with Cisco and other vendors, the IETF created IPFIX and released it as a vendor-neutral standard. It offers features similar to NetFlow, but includes more flexibility in configuring which fields to capture.
+
+**To implement NetFlow or IPFIX**, we don't need a whole new set of infrastructure or dedicated servers. Most vendors implement these protocols standard in their devices. We just have to enable and configure the protocol and have a place to send the metadata. You don't need a dedicated server for collecting this data; many NGFWs, IPS, and IDS have an implementation to collect and analyze flow data.
