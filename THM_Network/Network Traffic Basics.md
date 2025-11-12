@@ -189,17 +189,40 @@ NS traffic is often monitored closely as it flows from the LAN to the WAN and vi
 **East-West Traffic**  
 EW traffic stays within the corporate LAN, so it is often monitored less. However, it is important to keep track of these flows. When the network is compromised, an attacker will often exploit different services internally to move laterally within the network. As we see below, there are many services within this category. Click on each category to see which services it contains.
 
-Directory, Authentication & Identity Services
+<span style="color:red">Directory, Authentication & Identity Services</span>
+
+- Kerberos / LDAP: Authentication/queries to Active Directory
+- RADIUS / TACACS+: Network access control
+- Certificate Authority issuing internal certifications
 
 File shares & print services
 
+- SMB/CIFS: Accessing network drives
+- IPP/LPD: Printing over the network
+
 Router, switching, and infrastructure services
+
+- DHCP traffic between hosts and the DHCP server
+- ARP broadcast messages
+- Internal DNS
+- Routing protocol messages
 
 Application Communication
 
+- Database Connections: SQL over TCP
+- Microservices APIs: REST or gRPC calls between services
+
 Backup & Replication
 
+- File Replication: Between data centers or to backup servers
+- Database Replication: MySQL binlog replication, PostgreSQL streaming, and more
+
 Monitoring & Management
+
+- SNMP: Device health metrics
+- Syslog: Centralized logging
+- NetFlow/IPFIX: Traffic flow telemetry
+- Other endpoint logs sent to a central logging server
 
 ## Flow Examples
 
