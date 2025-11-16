@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "HTB Network.md",
+                "file": "HTB Network Traffic Analysis.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "HTB Network"
+              "title": "HTB Network Traffic Analysis"
             }
           }
         ],
@@ -93,7 +93,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "8704b6e39c33e635",
@@ -188,7 +189,7 @@
   "active": "27d14d6de35ba4bc",
   "lastOpenFiles": [
     "Network Traffic Basics.md",
-    "HTB Network.md",
+    "HTB Network Traffic Analysis.md",
     "Network Traffic"
   ]
 }
